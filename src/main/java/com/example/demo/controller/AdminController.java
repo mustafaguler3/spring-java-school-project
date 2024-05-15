@@ -135,6 +135,25 @@ public class AdminController {
 
         return modelAndView;
     }
+    @PostMapping("/addStudentToCourse")
+    public ModelAndView addStudentToCourse(Model model,@ModelAttribute("person") Person person,HttpSession session){
+        ModelAndView modelAndView = new ModelAndView();
+        Course course = (Course) session.getAttribute("courses");
+        Person personEntity = personRepository.readByEmail(person.getEmail());
+
+        if (personEntity == null || !(personEntity.getPersonId() > 0)){
+            modelAndView.setViewName("redirect:/admin/viewStudents?id="+course.getCourseId()+"&error=true");
+            return modelAndView;
+        }
+
+        personEntity.getCourses().add(course);
+        course.getPeople().add(personEntity);
+        personRepository.save(personEntity);
+        session.setAttribute("courses",course);
+        modelAndView.setViewName("redirect:/admin/viewStudents?id="+course.getCourseId());
+
+        return modelAndView;
+    }
 }
 
 
