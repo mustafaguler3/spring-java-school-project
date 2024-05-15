@@ -54,7 +54,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form th:action="@{/admin/addNewClass}" method="post" class="signin-form" th:object="${eazyClass}">
+                    <form th:action="@{/admin/addNewClass}" method="post" class="signin-form" th:object="${mgClass}">
                         <div class="modal-body">
                             <div class="input-grids">
                                 <label class="control-label" for="className">Class Name</label>
@@ -79,11 +79,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="eazyClass: ${eazyClasses}">
-                <td th:text="${eazyClass.classId}"></td>
-                <td th:text="${eazyClass.name}"></td>
-                <td><a th:href="@{/admin/displayStudents(classId=${eazyClass.classId})}" class="btn btn-success">VIEW</a></td>
-                <td><a th:href="@{/admin/deleteClass(id=${eazyClass.classId})}" class="btn btn-warning">DELETE</a></td>
+            <tr th:each="mgClass: ${mgClasses}">
+                <td th:text="${mgClass.classId}"></td>
+                <td th:text="${mgClass.name}"></td>
+                <td><a th:href="@{/admin/displayStudents(classId=${mgClass.classId})}" class="btn btn-success">VIEW</a></td>
+                <td><a th:href="@{/admin/deleteClass(id=${mgClass.classId})}" class="btn btn-warning">DELETE</a></td>
             </tr>
             </tbody>
         </table>

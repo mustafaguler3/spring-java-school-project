@@ -55,6 +55,10 @@ public class Person extends BaseEntity{
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id",referencedColumnName = "classId")
+    private MgClass mgClass;
 }
 
 
