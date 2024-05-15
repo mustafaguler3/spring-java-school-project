@@ -127,11 +127,16 @@ public class AdminController {
     }
 
     @GetMapping("/viewStudents")
-    public ModelAndView viewStudents(Model model,@RequestParam int id){
+    public ModelAndView viewStudents(Model model,
+                                     @RequestParam int id,
+                                     HttpSession session,
+                                     @RequestParam(value = "error",required = false) String error){
+        String errorMessage = null;
         ModelAndView modelAndView = new ModelAndView("course_students.html");
         Optional<Course> courses = courseRepository.findById(id);
         modelAndView.addObject("courses",courses.get());
         modelAndView.addObject("person",new Person());
+        session.setAttribute("courses",courses.get());
 
         return modelAndView;
     }
@@ -151,6 +156,23 @@ public class AdminController {
         personRepository.save(personEntity);
         session.setAttribute("courses",course);
         modelAndView.setViewName("redirect:/admin/viewStudents?id="+course.getCourseId());
+
+        return modelAndView;
+    }
+
+
+    @GetMapping("/deleteStudentFromCourse")
+    public ModelAndView deleteStudentFromCouse(Model model,
+                                               @RequestParam int personId,
+                                               HttpSession session){
+        Course course = (Course) session.getAttribute("courses");
+        Optional<Person> person = personRepository.findById(personId);
+        person.get().getCourses().remove(course);
+        course.getPeople().remove(person);
+        personRepository.save(person.get());
+        session.setAttribute("courses",course);
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/viewStudents?id="+course.getCourseId());
 
         return modelAndView;
     }
