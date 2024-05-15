@@ -95,7 +95,9 @@ public class AdminController {
         person.get().setMgClass(null);
         mgClass.getPeople().remove(person.get());
         classRepository.save(mgClass);
+
         session.setAttribute("mgClass",classRepository.save(mgClass));
+
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/displayStudents?classId="+mgClass.getClass());
 
         return modelAndView;

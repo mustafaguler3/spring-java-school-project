@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -29,7 +31,7 @@ public class Person extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private int personId;
     @NotBlank(message = "Name must not be blank")
     private String name;
     @NotBlank(message = "Mobile Number must not be blank")
@@ -59,6 +61,13 @@ public class Person extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "class_id",referencedColumnName = "classId")
     private MgClass mgClass;
+
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "person_course",
+    joinColumns = {
+            @JoinColumn(name = "person_id"),
+            @JoinColumn(name = "course_id")})
+    private Set<Course> courses = new HashSet<>();
 }
 
 
