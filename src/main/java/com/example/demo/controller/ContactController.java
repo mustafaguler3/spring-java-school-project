@@ -5,14 +5,12 @@ import com.example.demo.service.ContactService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -31,11 +29,24 @@ public class ContactController {
         return "contact.html";
     }
 
-    @GetMapping("/displayMessages")
-    public ModelAndView displayMessage(Model model){
-        List<Contact> contactMsg = contactService.findMsgWithOpenStatus();
+    @GetMapping("/displayMessages/page/{pageNum}")
+    public ModelAndView displayMessage(Model model,
+                                       @PathVariable("pageNum") int pageNum,
+                                       @PathVariable("sortField") String sortField,
+                                       @RequestParam("sortDir") String sortDir){
+        Page<Contact> contactMsg = contactService.findMsgWithOpenStatus(pageNum,sortField,sortDir);
+        List<Contact> contactMss = contactMsg.getContent();
+
         ModelAndView modelAndView = new ModelAndView("messages.html");
-        modelAndView.addObject("contactMsgs",contactMsg);
+        model.addAttribute("currentPage",pageNum);
+        model.addAttribute("totalPages",contactMsg.getTotalElements());
+        model.addAttribute("totalMsgs",contactMsg.getTotalElements());
+        model.addAttribute("sortField",sortField);
+        model.addAttribute("sortDir",sortDir);
+        model.addAttribute("reverseSortDir",sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("currentPage",pageNum);
+        modelAndView.addObject("contactMsg",contactMss);
+
         return modelAndView;
     }
 
