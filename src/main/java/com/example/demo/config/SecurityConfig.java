@@ -28,6 +28,7 @@ public class SecurityConfig  {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/contact").permitAll()
                 .requestMatchers("/saveMsg").permitAll()
                 .requestMatchers("/courses").permitAll()

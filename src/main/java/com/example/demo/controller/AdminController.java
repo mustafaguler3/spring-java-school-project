@@ -162,7 +162,7 @@ public class AdminController {
 
 
     @GetMapping("/deleteStudentFromCourse")
-    public ModelAndView deleteStudentFromCouse(Model model,
+    public ModelAndView deleteStudentFromCourse(Model model,
                                                @RequestParam int personId,
                                                HttpSession session){
         Course course = (Course) session.getAttribute("courses");
