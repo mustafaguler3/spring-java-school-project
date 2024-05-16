@@ -29,7 +29,7 @@ public class ContactService {
         contact.setCreatedBy("Anonymous");
         contact.setCreatedAt(LocalDateTime.now());
 
-        contactRepository.save(contact);
+        //contactRepository.save(contact);
 
         /*if (result > 0){
             isSaved = true;
@@ -40,15 +40,9 @@ public class ContactService {
 
     public boolean updateMsgStatus(int contactId){
         boolean isUpdated = false;
-        Optional<Contact> contact = contactRepository.findById(contactId);
+        int rows = contactRepository.updateStatusById("Close",contactId);
 
-        contact.ifPresent(c -> {
-            c.setStatus("Close");
-        });
-
-        Contact updatedContact = contactRepository.save(contact.get());
-
-        if (updatedContact != null && updatedContact.getUpdatedBy() != null){
+        if (rows > 0){
             isUpdated = true;
         }
         return isUpdated;
