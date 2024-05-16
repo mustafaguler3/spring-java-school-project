@@ -29,7 +29,7 @@ public class PersonService {
         person.setPwd(passwordEncoder.encode(person.getPwd()));
         person = personRepository.save(person);
 
-        if (person != null && person.getId() > 0){
+        if (person != null && person.getPersonId() > 0){
             isSaved = true;
         }
         return isSaved;
