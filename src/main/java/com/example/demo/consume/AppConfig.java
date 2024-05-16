@@ -15,6 +15,12 @@ public class AppConfig {
     }
 
 
+    @Bean
+    public RestTemplate restTemplate(){
+        RestTemplateBuilder builder = new RestTemplateBuilder();
+
+        return builder.basicAuthentication("admin@mgschool","admin").build();
+    }
 
 }
 
